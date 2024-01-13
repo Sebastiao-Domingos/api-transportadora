@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model admin {
+  id    Int    @id @default(autoincrement())
+  email String @unique(map: "Admin_email_key")
+  name  String
+  senha String
+}
+
+model caminhao {
+  id             Int      @id @default(autoincrement())
+  nome           String
+  ano_fabricacao String 
+  km_rodado      Int
+  marca          String
+  pneu           pneu[]
+  viagem viagem[]
+}
+
+model enderenco {
+  id           Int       @id @default(autoincrement())
+  bairro       String
+  rua          String
+  motorista_id Int
+  motorista    motorista @relation(fields: [motorista_id], references: [id], map: "Enderenco_motorista_id_fkey")
+
+  @@index([motorista_id], map: "Enderenco_motorista_id_fkey")
+}
+
+model motorista {
+  id                    Int         @id @default(autoincrement())
+  nome                  String
+  numero_carta_conducao String
+  telefone              String
+  enderenco             enderenco[]
+  viagem                viagem[]
+}
+
+model pneu {
+  id          Int      @id @default(autoincrement())
+  marca       String
+  durancao    Int
+  caminhao_id Int
+  caminhao    caminhao @relation(fields: [caminhao_id], references: [id], map: "Pneu_caminhao_id_fkey")
+
+  @@index([caminhao_id], map: "Pneu_caminhao_id_fkey")
+}
+
+model viagem {
+  id Int @id @default(autoincrement()) 
+  origem String
+  destino String
+  kilometragem Int
+  data_inicio String
+  data_fim String
+  caminhao    caminhao @relation(fields: [caminhao_id], references: [id])
+  motorista   motorista @relation(fields: [motorista_id], references: [id])
+  caminhao_id Int 
+  motorista_id Int 
+}
