@@ -36,6 +36,8 @@ export class MotoristaController {
      * create
      */
     public async add(req:Request , res :Response) {
+        console.log(req);
+        
         const data: MotoristaData = req.body;
         await service.add(data).then( response => {
             res.status(200).json(response)

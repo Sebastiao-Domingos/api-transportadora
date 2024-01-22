@@ -21,6 +21,7 @@ export class CaminhaoService implements CaminhaoRepository{
     }
 
     async add (data: CaminhaoData):Promise<CaminhaoData>{
+       
         return await this.prisma.caminhao.create({
             data : data
         }).then(res => res)

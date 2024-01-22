@@ -21,6 +21,8 @@ export class MotoristaService implements MotoristaRepository{
     }
 
     async add (data: MotoristaData):Promise<MotoristaData>{
+        console.log(data);
+        
         return await this.prisma.motorista.create({
             data : data
         }).then(res => res)
